@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-using DynamicLogger.Services;
+﻿using DynamicLogger.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -9,9 +8,17 @@ using Microsoft.Extensions.Logging.Console;
 
 namespace DynamicLogger;
 
+/// <summary>
+/// Provides extension methods for configuring dynamic logging capabilities in ASP.NET Core applications.
+/// </summary>
 public static class DynamicLoggerExtensions
 {
-    // Service configuration extension
+    /// <summary>
+    /// Configures logging services with dynamic logging capabilities.
+    /// </summary>
+    /// <param name="logging">The logging builder instance.</param>
+    /// <param name="services">The service collection for dependency injection.</param>
+    /// <returns>The configured logging builder.</returns>
     public static ILoggingBuilder AddLoggerServices(this ILoggingBuilder logging, IServiceCollection services)
     {
         logging.ClearProviders();
@@ -20,10 +27,15 @@ public static class DynamicLoggerExtensions
         return logging;
     }
 
+    /// <summary>
+    /// Maps endpoints for dynamic logger configuration.
+    /// </summary>
+    /// <param name="endpoints">The endpoint route builder.</param>
+    /// <returns>The configured endpoint route builder.</returns>
     public static IEndpointRouteBuilder MapLoggerEndpoint(this IEndpointRouteBuilder endpoints)
     {
         // GET: Returns all log categories currently tracked.
-        endpoints.MapGet("/logging/getCategories", (IServiceProvider services) =>
+        endpoints.MapGet("/logging/get-categories", (IServiceProvider services) =>
         {
             return Results.Ok(DynamicLoggerChanger.GetCategories());
         });
@@ -79,7 +91,12 @@ public static class DynamicLoggerExtensions
         return endpoints;
     }
 
-    // Variant allowing a configurable path prefix for setlevel
+    /// <summary>
+    /// Maps endpoints for dynamic logger configuration with a custom base path.
+    /// </summary>
+    /// <param name="endpoints">The endpoint route builder.</param>
+    /// <param name="path">The custom base path for the endpoints.</param>
+    /// <returns>The configured endpoint route builder.</returns>
     public static IEndpointRouteBuilder MapLoggerEndpoint(this IEndpointRouteBuilder endpoints, string path)
     {
         endpoints.MapPost("{path}/{level}", (string level, IServiceProvider services) =>
@@ -91,8 +108,6 @@ public static class DynamicLoggerExtensions
             }
             return Results.BadRequest("Invalid log level. Use: Trace, Debug, Information, Warning, Error, Critical, None");
         });
-
-
 
         return endpoints;
     }
