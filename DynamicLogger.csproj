@@ -12,6 +12,7 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Nicu9josu4/DynamicLogger/tree/main</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
